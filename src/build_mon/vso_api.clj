@@ -14,8 +14,8 @@
   (let [{:keys [get-fn account logger]} vso-api-data
         repository-id (-> build :repository :id)
         source-version (:sourceVersion build)
-        commit-url (str "https://" account ".visualstudio.com/defaultcollection/_apis/git/repositories/"
-                        repository-id "/commits/" source-version "?api-version=1.0")]
+        commit-url (str "https://" account ".visualstudio.com/defaultcollection/_apis/tfvc/changesets?api-version=1.0&$top=1")]
+;                        repository-id "/commits/" source-version "?api-version=1.0")]
     (try (-> (get-json-body get-fn commit-url) :comment)
          (catch Exception e
            ((:log-exception logger) "Bad Response when attempting to retrieve commit message." e)))))
