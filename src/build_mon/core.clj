@@ -7,7 +7,7 @@
             [cheshire.core :as json]
             [clj-time.core :as t]
             [build-mon.vso-api :as api]
-            [build-mon.vso-release-api :as release-api]
+;            [build-mon.vso-release-api :as release-api]
             [build-mon.html :as html])
   (:gen-class))
 
@@ -90,21 +90,24 @@
         sorting-map (into {} (map-indexed (fn [idx itm] [itm idx]) states-ordered-worst-first))]
     (construct-favicon-path (first (sort-by sorting-map all-states)))))
 
-(defn universal-monitor-for-definition-ids [vso-api vso-release-api request build-definition-ids release-definition-ids]
-  (let [build-info-maps (remove nil? (map #(retrieve-build-info vso-api %) build-definition-ids))
-        release-info-maps (remove nil? (map #(retrieve-release-info vso-release-api %) release-definition-ids))]
+;(defn universal-monitor-for-definition-ids [vso-api vso-release-api request build-definition-ids release-definition-ids]
+(defn universal-monitor-for-definition-ids [vso-api request build-definition-ids]
+  (let [build-info-maps (remove nil? (map #(retrieve-build-info vso-api %) build-definition-ids))]
+;        release-info-maps (remove nil? (map #(retrieve-release-info vso-release-api %) release-definition-ids))]
     (when (and (not-empty build-info-maps) (not-empty release-info-maps))
       (let [favicon-path (get-favicon-path build-info-maps release-info-maps)]
         {:status 200
          :headers {"Content-Type" "text/html; charset=utf-8"}
          :body (html/generate-build-monitor-html build-info-maps release-info-maps favicon-path)}))))
 
-(defn universal-monitor [vso-api vso-release-api request]
-  (let [release-definitions ((:retrieve-release-definitions vso-release-api))
-        release-definition-ids (map :id release-definitions)
-        build-definitions ((:retrieve-build-definitions vso-api))
+;(defn universal-monitor [vso-api vso-release-api request]
+(defn universal-monitor [vso-api request]
+;  (let [release-definitions ((:retrieve-release-definitions vso-release-api))
+;        release-definition-ids (map :id release-definitions)
+  (let [build-definitions ((:retrieve-build-definitions vso-api))
         build-definition-ids (map :id build-definitions)]
-    (universal-monitor-for-definition-ids vso-api vso-release-api request build-definition-ids release-definition-ids)))
+;    (universal-monitor-for-definition-ids vso-api vso-release-api request build-definition-ids release-definition-ids)))
+    (universal-monitor-for-definition-ids vso-api vso-release-api request build-definition-ids)))
 
 (def routes ["/" :universal-monitor])
 
@@ -129,7 +132,7 @@
             project (codec/url-encode vso-project)
             get-fn (api/vso-api-get-fn vso-personal-access-token)
             vso-api (api/vso-api-fns logger get-fn account project build_definition_filter)
-            vso-release-api (release-api/vso-release-api-fns logger get-fn account project release_definition_filter)
+;            vso-release-api (release-api/vso-release-api-fns logger get-fn account project release_definition_filter)
             wrapped-handler (-> (handlers vso-api vso-release-api)
                                 wrap-routes
                                 (resource/wrap-resource "public")
