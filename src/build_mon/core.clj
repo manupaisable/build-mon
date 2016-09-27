@@ -128,8 +128,8 @@
       (let [account (codec/url-encode vso-account)
             project (codec/url-encode vso-project)
             get-fn (api/vso-api-get-fn vso-personal-access-token)
-            vso-api (api/vso-api-fns logger get-fn account project build_definition_filter release_definition_filter)
-            vso-release-api (release-api/vso-release-api-fns logger get-fn account project)
+            vso-api (api/vso-api-fns logger get-fn account project build_definition_filter)
+            vso-release-api (release-api/vso-release-api-fns logger get-fn account project release_definition_filter)
             wrapped-handler (-> (handlers vso-api vso-release-api)
                                 wrap-routes
                                 (resource/wrap-resource "public")
