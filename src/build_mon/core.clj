@@ -83,10 +83,12 @@
 (defn construct-favicon-path [state]
   (str "/favicon_" (name state) ".ico"))
 
-(defn get-favicon-path [build-info-maps release-info-maps]
+;(defn get-favicon-path [build-info-maps release-info-maps]
+(defn get-favicon-path [build-info-maps]
   (let [build-states (remove nil? (map :state build-info-maps))
-        release-states (remove nil? (map :state release-info-maps))
-        all-states (distinct (concat build-states release-states))
+;        release-states (remove nil? (map :state release-info-maps))
+;        all-states (distinct (concat build-states release-states))
+        all-states (distinct (concat build-states))
         sorting-map (into {} (map-indexed (fn [idx itm] [itm idx]) states-ordered-worst-first))]
     (construct-favicon-path (first (sort-by sorting-map all-states)))))
 
@@ -94,11 +96,14 @@
 (defn universal-monitor-for-definition-ids [vso-api request build-definition-ids]
   (let [build-info-maps (remove nil? (map #(retrieve-build-info vso-api %) build-definition-ids))]
 ;        release-info-maps (remove nil? (map #(retrieve-release-info vso-release-api %) release-definition-ids))]
-    (when (and (not-empty build-info-maps) (not-empty release-info-maps))
-      (let [favicon-path (get-favicon-path build-info-maps release-info-maps)]
+;    (when (and (not-empty build-info-maps) (not-empty release-info-maps))
+    (when (not-empty build-info-maps))
+;      (let [favicon-path (get-favicon-path build-info-maps release-info-maps)]
+      (let [favicon-path (get-favicon-path build-info-maps)]
         {:status 200
          :headers {"Content-Type" "text/html; charset=utf-8"}
-         :body (html/generate-build-monitor-html build-info-maps release-info-maps favicon-path)}))))
+;         :body (html/generate-build-monitor-html build-info-maps release-info-maps favicon-path)}))))
+         :body (html/generate-build-monitor-html build-info-maps favicon-path)}))))
 
 ;(defn universal-monitor [vso-api vso-release-api request]
 (defn universal-monitor [vso-api request]
