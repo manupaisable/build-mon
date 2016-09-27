@@ -38,9 +38,10 @@
        :commit-message commit-message})))
 
 (defn- retrieve-build-definitions [vso-api-data]
-  (let [{:keys [get-fn account project logger]} vso-api-data
+  (let [{:keys [get-fn account project build_definition_filter logger]} vso-api-data
         build-definitions-url (str "https://" account  ".visualstudio.com/defaultcollection/"
-                                   project "/_apis/build/definitions?api-version=2.0&$top=3")]
+                                   project "/_apis/build/definitions?api-version=2.0&name="
+                                   build_definition_filter)]
     (try (-> (get-json-body get-fn build-definitions-url) :value)
          (catch Exception e
            ((:log-exception logger) "Bad Response when attempting to retrieve build definitions." e)))))
@@ -51,6 +52,6 @@
 
 (defn vso-api-fns [logger get-fn account project]
   (let [vso-api-data {:get-fn get-fn :logger logger
-                      :account account :project project}]
+                      :account account :project project :build_definition_filter build_definition_filter}]
     {:retrieve-build-info (partial retrieve-build-info vso-api-data)
      :retrieve-build-definitions (partial retrieve-build-definitions vso-api-data)}))
