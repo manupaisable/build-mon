@@ -50,7 +50,7 @@
   (fn [url] @(http/get url {:basic-auth ["USERNAME CAN BE ANY VALUE" token]
                             :accept :json :follow-redirects false})))
 
-(defn vso-api-fns [logger get-fn account project]
+(defn vso-api-fns [logger get-fn account project build_definition_filter]
   (let [vso-api-data {:get-fn get-fn :logger logger
                       :account account :project project :build_definition_filter build_definition_filter}]
     {:retrieve-build-info (partial retrieve-build-info vso-api-data)
