@@ -126,7 +126,8 @@
             response))))))
 
 (defn handlers [vso-api vso-release-api]
-  {:universal-monitor (partial universal-monitor vso-api vso-release-api)})
+;  {:universal-monitor (partial universal-monitor vso-api vso-release-api)})
+  {:universal-monitor (partial universal-monitor vso-api)})
 
 (defn -main [& [vso-account vso-project vso-personal-access-token build_definition_filter release_definition_filter port]]
   (let [port (Integer. (or port 3000))
