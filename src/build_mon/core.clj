@@ -120,11 +120,12 @@
 (defn handlers [vso-api vso-release-api]
   {:universal-monitor (partial universal-monitor vso-api vso-release-api)})
 
-(defn -main [& [vso-account vso-project vso-personal-access-token port]]
+(defn -main [& [vso-account vso-project vso-personal-access-token port build_definition_filter]]
   (let [port (Integer. (or port 3000))]
-    (if (and vso-account vso-project vso-personal-access-token port)
+    (if (and vso-account vso-project vso-personal-access-token port build_definition_filter)
       (let [account (codec/url-encode vso-account)
             project (codec/url-encode vso-project)
+            build_definition_filter (codec/url-encode build_definition_filter)
             get-fn (api/vso-api-get-fn vso-personal-access-token)
             vso-api (api/vso-api-fns logger get-fn account project)
             vso-release-api (release-api/vso-release-api-fns logger get-fn account project)
