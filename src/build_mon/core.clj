@@ -112,7 +112,7 @@
   (let [build-definitions ((:retrieve-build-definitions vso-api))
         build-definition-ids (map :id build-definitions)]
 ;    (universal-monitor-for-definition-ids vso-api vso-release-api request build-definition-ids release-definition-ids)))
-    (universal-monitor-for-definition-ids vso-api vso-release-api request build-definition-ids)))
+    (universal-monitor-for-definition-ids vso-api request build-definition-ids)))
 
 (def routes ["/" :universal-monitor])
 
