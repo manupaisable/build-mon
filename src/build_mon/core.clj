@@ -97,7 +97,7 @@
   (let [build-info-maps (remove nil? (map #(retrieve-build-info vso-api %) build-definition-ids))]
 ;        release-info-maps (remove nil? (map #(retrieve-release-info vso-release-api %) release-definition-ids))]
 ;    (when (and (not-empty build-info-maps) (not-empty release-info-maps))
-    (when (not-empty build-info-maps))
+    (when (not-empty build-info-maps)
 ;      (let [favicon-path (get-favicon-path build-info-maps release-info-maps)]
       (let [favicon-path (get-favicon-path build-info-maps)]
         {:status 200
