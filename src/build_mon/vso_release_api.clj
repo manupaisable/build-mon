@@ -33,15 +33,16 @@
        :previous-release previous-release-info})))
 
 (defn- retrieve-release-definitions [vso-release-api-data]
-  (let [{:keys [get-fn account project logger]} vso-release-api-data
+  (let [{:keys [get-fn account project release_definition_filter logger]} vso-release-api-data
         url (str "https://" account  ".vsrm.visualstudio.com/defaultcollection/"
-                 project "/_apis/release/definitions?api-version=3.0-preview.2&$top=3")]
+                 project "/_apis/release/definitions?api-version=3.0-preview.2&name="
+                 release_definition_filter)]
     (try (-> (get-json-body get-fn url) :value)
          (catch Exception e
            ((:log-exception logger) "Bad Response when attempting to retrieve release definitions." e)))))
 
-(defn vso-release-api-fns [logger get-fn account project]
+(defn vso-release-api-fns [logger get-fn account project release_definition_filter]
   (let [vso-release-api-data {:get-fn get-fn :logger logger
-                              :account account :project project}]
+                              :account account :project project :release_definition_filter release_definition_filter}]
     {:retrieve-release-info (partial retrieve-release-info vso-release-api-data)
      :retrieve-release-definitions (partial retrieve-release-definitions vso-release-api-data)}))
