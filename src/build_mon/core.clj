@@ -127,7 +127,7 @@
             project (codec/url-encode vso-project)
             build_definition_filter (codec/url-encode build_definition_filter)
             get-fn (api/vso-api-get-fn vso-personal-access-token)
-            vso-api (api/vso-api-fns logger get-fn account project)
+            vso-api (api/vso-api-fns logger get-fn account project build_definition_filter)
             vso-release-api (release-api/vso-release-api-fns logger get-fn account project)
             wrapped-handler (-> (handlers vso-api vso-release-api)
                                 wrap-routes
