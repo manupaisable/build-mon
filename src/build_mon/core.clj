@@ -125,7 +125,8 @@
             (println "Response time:" (t/in-seconds (t/interval request-start-time (t/now))) "seconds")
             response))))))
 
-(defn handlers [vso-api vso-release-api]
+;(defn handlers [vso-api vso-release-api]
+(defn handlers [vso-api]
 ;  {:universal-monitor (partial universal-monitor vso-api vso-release-api)})
   {:universal-monitor (partial universal-monitor vso-api)})
 
