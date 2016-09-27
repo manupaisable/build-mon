@@ -82,12 +82,12 @@ a{
 
 .succeeded{
   background-color: #209422;
-  color: white;
+  color: black;
 }
 
 .failed{
   background-color: #c32727;
-  color: white;
+  color: black;
 }
 
 .in-progress{
@@ -102,7 +102,7 @@ a{
 
 .not-started {
   background-color: #5ea7df;
-  color: white;
+  color: black;
 }
 
 .refresh-icon{
