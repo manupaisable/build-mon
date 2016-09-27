@@ -138,7 +138,8 @@
             get-fn (api/vso-api-get-fn vso-personal-access-token)
             vso-api (api/vso-api-fns logger get-fn account project build_definition_filter)
 ;            vso-release-api (release-api/vso-release-api-fns logger get-fn account project release_definition_filter)
-            wrapped-handler (-> (handlers vso-api vso-release-api)
+;            wrapped-handler (-> (handlers vso-api vso-release-api)
+            wrapped-handler (-> (handlers vso-api)
                                 wrap-routes
                                 (resource/wrap-resource "public")
                                 (params/wrap-params))]
