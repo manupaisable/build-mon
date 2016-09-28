@@ -19,7 +19,6 @@
   (let [{:keys [get-fn account project logger]} vso-release-api-data
         last-two-releases-url (str "https://" account  ".vsrm.visualstudio.com/defaultcollection/"
                                    project "/_apis/release/releases?api-version=3.0-preview.2&definitionId=" release-definition-id "&$top=2")]
-    (println "release-definition-id: " release-definition-id)
     (try (-> (get-json-body get-fn last-two-releases-url) :value)
          (catch Exception e
            ((:log-exception logger) "Bad Response when attempting to retrieve last two releases." e)))))
