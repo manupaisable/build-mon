@@ -46,11 +46,13 @@
 (defn- count-total-releases [release-info-maps]
   (reduce + (map (fn [rel-info-map] (count (:release-environments rel-info-map))) release-info-maps)))
 
-(defn generate-build-monitor-html [build-info-maps release-info-maps favicon-path]
+;(defn generate-build-monitor-html [build-info-maps release-info-maps favicon-path]
+(defn generate-build-monitor-html [build-info-maps favicon-path]
   (let [total-builds (count build-info-maps)
-        total-releases (count-total-releases release-info-maps)
+;        total-releases (count-total-releases release-info-maps)
         max-panels-per-row 4
-        panel-rows (Math/ceil (/ (+ total-builds total-releases) max-panels-per-row))
+;        panel-rows (Math/ceil (/ (+ total-builds total-releases) max-panels-per-row))
+        panel-rows (Math/ceil (/ total-builds max-panels-per-row))
         panel-width 25
         panel-height (/ 100 panel-rows)]
     (hiccup/html
@@ -66,5 +68,5 @@
        refresh-icon
        error-modal
        (map generate-build-panel build-info-maps)
-       (map generate-release-env-panels release-info-maps)
+;       (map generate-release-env-panels release-info-maps)
        [:script {:src "/refresh.js" :defer "defer"}]])))
